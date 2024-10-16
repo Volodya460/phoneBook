@@ -9,7 +9,6 @@ import { fetchContacts, fetchContactsPro } from "../redux/operations";
 import { getError, getIsLoading } from "../redux/contactSlice";
 import { getIsLoggedIn, getUserSubscription } from "../redux/auth/authSlice";
 import css from "./contactsPage.module.css";
-import { BookLoader } from "../assets/loaders/bookLoader";
 
 export default function ContactsPage() {
   const dispatch = useDispatch();
@@ -35,7 +34,7 @@ export default function ContactsPage() {
         <AddForm />
         <div className={css.contactBox}>
           <Filter />
-          {loading && !error ? <BookLoader /> : <ContactList />}
+          {loading && !error ? <p>Loading</p> : <ContactList />}
         </div>
       </section>
     </Container>
