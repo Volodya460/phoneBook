@@ -1,0 +1,107 @@
+.section {
+  padding-top: 36px;
+}
+
+.animationBody {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+  width: 100%;
+  overflow: hidden;
+}
+.ring {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media screen and (min-width: 768px) {
+    width: 300px;
+    height: 300px;
+  }
+  @media screen and (min-width: 1280px) {
+    width: 400px;
+    height: 400px;
+  }
+}
+.ring i {
+  position: absolute;
+  inset: 0;
+  border: 2px solid #fff;
+  transition: 0.5s;
+  font-size: 50px;
+  border: 6px solid #2b2829;
+  filter: drop-shadow(0 0 20px #0977de);
+}
+.ring i:nth-child(1) {
+  border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+  animation: animate 6s linear infinite;
+  &:hover {
+    border: 6px solid #00ff0a;
+    filter: drop-shadow(0 0 20px #b3de09);
+  }
+}
+.ring i:nth-child(2) {
+  border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+  animation: animate 4s linear infinite;
+  &:hover {
+    border: 6px solid #ff0057;
+    filter: drop-shadow(0 0 20px #0977de);
+  }
+}
+.ring i:nth-child(3) {
+  border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+  animation: animate2 10s linear infinite;
+  &:hover {
+    border: 6px solid#fffd44;
+    filter: drop-shadow(0 0 20px #b3de09);
+  }
+}
+.ring i:nth-child(4) {
+  border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+  animation: animate2 8s linear infinite;
+  &:hover {
+    border: 6px solid#ff0057;
+    filter: drop-shadow(0 0 20px #ff0057);
+  }
+}
+.ring i:nth-child(5) {
+  border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+  animation: animate2 7s linear infinite;
+  &:hover {
+    border: 6px solid#fffd44;
+    filter: drop-shadow(0 0 20px #b3de09);
+  }
+}
+.ring i:nth-child(6) {
+  border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+  animation: animate2 3s linear infinite;
+  &:hover {
+    border: 6px solid#ff0057;
+    filter: drop-shadow(0 0 20px #ff0057);
+  }
+}
+.ring:hover i {
+  border: 6px solid #024bf4;
+  filter: drop-shadow(0 0 20px #ccfe02);
+}
+
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes animate2 {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}

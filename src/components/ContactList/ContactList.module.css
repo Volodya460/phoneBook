@@ -1,0 +1,35 @@
+.contactList {
+  display: grid;
+
+  grid-template-columns: repeat(2, 150px);
+  grid-template-rows: repeat(2, 1fr);
+
+  gap: 15px;
+  margin-top: 20px;
+
+  @media screen and (min-width: 768px) {
+    grid-template-columns: repeat(3, 220px);
+    grid-template-rows: repeat(auto, 1fr);
+  }
+
+  @media screen and (min-width: 1280px) {
+    grid-template-columns: repeat(3, 400px);
+    grid-template-rows: repeat(auto, 1fr);
+  }
+}
+
+.buttonFiltr {
+  margin-top: 10px;
+  border-radius: 5px;
+  color: inherit;
+  filter: none;
+  transition: color 0.3s ease, filter 0.3s ease;
+  &:hover {
+    color: rgb(226, 43, 125);
+    filter: drop-shadow(0 0 20px #0977de);
+  }
+  @media screen and (min-width: 1280px) {
+    font-size: 20px;
+    padding: 5px;
+  }
+}
