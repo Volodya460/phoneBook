@@ -13,6 +13,7 @@ import { refreshUser } from "./redux/auth/authOperations";
 
 import { PrivateRoute } from "./PrivateRout";
 import { RestrictedRoute } from "./RestrictedRout";
+import { AuthLoader } from "./assets/loaders/AuthLoader";
 
 const HomePage = lazy(() => import("../src/pages/HomePage"));
 const RegisterPage = lazy(() => import("../src/pages/RegistePage"));
@@ -54,5 +55,5 @@ export default function App() {
     )
   );
 
-  return IsRefreshing ? <p>Loading...</p> : <RouterProvider router={router} />;
+  return IsRefreshing ? <AuthLoader /> : <RouterProvider router={router} />;
 }
