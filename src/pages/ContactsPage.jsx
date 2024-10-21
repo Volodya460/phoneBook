@@ -9,7 +9,7 @@ import { fetchContacts, fetchContactsPro } from "../redux/operations";
 import { getError, getIsLoading } from "../redux/contactSlice";
 import { getIsLoggedIn, getUserSubscription } from "../redux/auth/authSlice";
 import css from "./contactsPage.module.css";
-import { BookLoader } from "../assets/loaders/bookLoader";
+import { BookLoader } from "../assets/loaders/BookLoader";
 
 export default function ContactsPage() {
   const dispatch = useDispatch();
