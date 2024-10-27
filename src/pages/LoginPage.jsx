@@ -8,26 +8,22 @@ import { Animation } from "../animation/Animation";
 export default function LoginPage() {
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    if (
-      (!form.elements.email.value.trim(), !form.elements.password.value.trim())
-    ) {
-      form.reset();
+    const { email, password } = e;
+
+    if ((!email.trim(), !password.trim())) {
       return alert("Fill the fields");
     }
     dispatch(
       logIn({
-        email: form.elements.email.value,
-        password: form.elements.password.value,
+        email: email,
+        password: password,
       })
     );
-    form.reset();
   };
   return (
     <Container>
       <Animation>
-        <LoginForm handleSubmit={handleSubmit} />
+        <LoginForm onSubmit={handleSubmit} />
       </Animation>
     </Container>
   );

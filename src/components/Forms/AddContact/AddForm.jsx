@@ -1,35 +1,28 @@
-import { useState } from "react";
 import { getUser } from "../../../redux/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { getContacts } from "../../../redux/contactSlice";
 import { addContact } from "../../../redux/operations";
 import css from "./AddForm.module.css";
+import { addSchema } from "../../../formSchema/addSchema";
+import Input from "../Inputs/Inputs";
 
 export default function AddForm() {
-  const [name, setName] = useState("");
-  const [number, setNumbere] = useState("");
-  const [email, setEmail] = useState("");
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
   const user = useSelector(getUser);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    switch (name) {
-      case "name":
-        setName(value);
-        break;
-      case "number":
-        setNumbere(value);
-        break;
-      case "email":
-        setEmail(value);
-        break;
+  const { register, handleSubmit, formState } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      number: "",
+    },
+    resolver: zodResolver(addSchema),
+  });
 
-      default:
-        break;
-    }
-  };
+  const { errors } = formState;
 
   const checkContactAdd = (email) => {
     let normolizeEmail = email.toLowerCase();
@@ -43,8 +36,9 @@ export default function AddForm() {
     );
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const onSubmit = (e) => {
+    const { name, email, number } = e;
+    console.log(name);
     let contact = {
       name,
       phone: number,
@@ -52,53 +46,30 @@ export default function AddForm() {
     };
     if (checkContactAdd(contact.email)) {
       alert(`${email} already added`);
-      reset();
+
       return;
     }
 
     dispatch(addContact(contact));
-
-    reset();
-  };
-  const reset = () => {
-    setName("");
-    setNumbere("");
-    setEmail("");
   };
 
   return (
-    <form className={css.formBox} onSubmit={handleSubmit}>
+    <form className={css.formBox} onSubmit={handleSubmit(onSubmit)}>
       <label className={css.lableName}>
         <span>Name</span>
-        <input
-          type="text"
-          name="name"
-          value={name}
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          onChange={handleChange}
-          required
-        />
+
+        <Input {...register("name")} placeholder="Contact name" />
+        <div className={css.errorSpan}>{errors.name?.message}</div>
       </label>
-      <label className={css.lableEmail}>
+      <label className={css.lableEmail} placeholder="User name">
         <span>Email</span>
-        <input
-          type="email"
-          name="email"
-          value={email}
-          onChange={handleChange}
-          required
-        />
+        <Input {...register("email")} placeholder="Contact email" />
+        <div className={css.errorSpan}>{errors.email?.message}</div>
       </label>
       <label className={css.lableNumber}>
         <span>Number</span>
-        <input
-          type="tel"
-          name="number"
-          value={number}
-          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          onChange={handleChange}
-          required
-        />
+        <Input {...register("number")} placeholder="Contact number" />
+        <div className={css.errorSpan}>{errors.number?.message}</div>
       </label>
       <button type="submit" className={css.formButton}>
         Add Contact

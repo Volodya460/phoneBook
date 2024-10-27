@@ -8,17 +8,24 @@
   align-items: center;
   flex-direction: column;
 
-  gap: 20px;
+  gap: 5px;
   @media screen and (min-width: 768px) {
     width: 400px;
   }
 }
+
 .login h2 {
   font-size: 50px;
   color: #0e0e0e;
 }
 
-.login .inputBx input {
+.inputBx {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.inputBx input {
   position: relative;
   width: 250px;
   padding: 12px 20px;
@@ -39,7 +46,7 @@
   }
 }
 
-.login .links {
+.links {
   position: relative;
   width: 100%;
   display: flex;
@@ -73,4 +80,11 @@
   @media screen and (min-width: 768px) {
     font-size: 30px;
   }
+}
+
+.errorSpan {
+  height: 20px;
+  font-size: 20px;
+  text-align: center;
+  color: red;
 }

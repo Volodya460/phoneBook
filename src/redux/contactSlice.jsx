@@ -22,6 +22,7 @@ const handlePending = (state) => {
 const handleRejected = (state, action) => {
   state.contacts.isLoading = false;
   state.contacts.error = action.payload;
+  alert(action.payload);
 };
 
 export const contactSlice = createSlice({

@@ -10,31 +10,23 @@ export default function RegisterPage() {
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const form = e.currentTarget;
-    if (
-      (!form.elements.name.value.trim(),
-      !form.elements.email.value.trim(),
-      !form.elements.password.value.trim())
-    ) {
-      form.reset();
+    const { name, email, password } = e;
+    if ((!name.trim(), !email.trim(), !password.trim())) {
       return alert("Fill the fields");
     }
     dispatch(
       register({
-        name: form.elements.name.value,
-        email: form.elements.email.value,
-        password: form.elements.password.value,
+        name: name,
+        email: email,
+        password: password,
       })
     );
-    form.reset();
   };
   return (
     <Container>
       <Animation>
         {" "}
-        <RegisteForm handleSubmit={handleSubmit} />
+        <RegisteForm onSubmit={handleSubmit} />
       </Animation>
     </Container>
   );

@@ -6,7 +6,7 @@
   gap: 20px;
 }
 
-.inputBx input {
+.updateForm input {
   position: relative;
   width: 250px;
   padding: 5px;
@@ -28,7 +28,8 @@
   }
 }
 
-.inputBx {
+.inputName {
+  position: relative;
   @media screen and (min-width: 768px) {
     display: flex;
     align-items: center;
@@ -39,12 +40,63 @@
     color: inherit;
     transition: color 0.4s ease;
   }
+  &:hover span {
+    color: red;
+  }
+
+  .errorSpan {
+    position: absolute;
+    top: -20px;
+    left: 85px;
+  }
 }
 
-.inputBx:hover span {
-  color: red;
+.inputEmail {
+  position: relative;
+  @media screen and (min-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  span {
+    color: inherit;
+    transition: color 0.4s ease;
+  }
+  &:hover span {
+    color: red;
+  }
+
+  .errorSpan {
+    position: absolute;
+    top: -20px;
+    left: 85px;
+  }
 }
-.button {
+.inputNumber {
+  position: relative;
+  @media screen and (min-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  span {
+    color: inherit;
+    transition: color 0.4s ease;
+  }
+  &:hover span {
+    color: red;
+  }
+
+  .errorSpan {
+    position: absolute;
+    top: -20px;
+    left: 85px;
+  }
+}
+
+.updateForm .button {
   width: 50%;
   font-size: 20px;
   padding: 5px;
@@ -74,5 +126,15 @@
 
   @media screen and (min-width: 768px) {
     font-size: 30px;
+  }
+}
+
+.errorSpan {
+  height: 20px;
+  font-size: 13px;
+  text-align: center;
+  color: red;
+  @media screen and (min-width: 768px) {
+    font-size: 20px;
   }
 }
