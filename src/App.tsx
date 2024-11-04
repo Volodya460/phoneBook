@@ -6,20 +6,21 @@ import {
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, lazy } from "react";
-import SharedLayout from "../src/components/SharedLayout/SharedLayout";
+import SharedLayout from "./components/SharedLayout/SharedLayout";
 import { getIsRefreshing } from "./redux/auth/authSlice";
 import { refreshUser } from "./redux/auth/authOperations";
 import { PrivateRoute } from "./PrivateRout";
 import { RestrictedRoute } from "./RestrictedRout";
 import { AuthLoader } from "./assets/loaders/AuthLoader";
+import { AppDispatch } from "./redux/store";
 
-const HomePage = lazy(() => import("../src/pages/HomePage"));
-const RegisterPage = lazy(() => import("../src/pages/RegistePage"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const RegisterPage = lazy(() => import("./pages/RegistePage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
-const ContactsPage = lazy(() => import("../src/pages/ContactsPage"));
+const ContactsPage = lazy(() => import("./pages/ContactsPage"));
 
 export default function App() {
-  const dispatche = useDispatch();
+  const dispatche = useDispatch<AppDispatch>();
   const IsRefreshing = useSelector(getIsRefreshing);
 
   useEffect(() => {
