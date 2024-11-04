@@ -1,39 +1,50 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
   changeUserSubscription,
   logIn,
   logOut,
   refreshUser,
-  register,
+  registerAuth,
 } from "./authOperations";
+import { AuthState } from "../../assets/schemas/authSchemas";
+import { RootState } from "../store";
+import { FetchContactsError } from "../../assets/schemas/ContactSchema";
 
-const initialState = {
+const initialState: AuthState = {
   user: { name: null, email: null, subscription: null, _id: null },
   token: null,
   isLoggedIn: false,
   isRegister: false,
   isRefreshing: false,
   isLoading: false,
+  error: null,
 };
 
-const handlePending = (state) => {
+const handlePending = (state: AuthState) => {
   state.isLoading = true;
+};
+
+const handleRejected = (
+  state: AuthState,
+  action: PayloadAction<FetchContactsError | undefined>
+) => {
+  state.isLoading = false;
+  state.error = action.payload?.message || "An unexpected error occurred";
+  alert(action.payload?.message || "An unexpected error occurred");
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, handlePending)
-      .addCase(register.fulfilled, (state) => {
+      .addCase(registerAuth.pending, handlePending)
+      .addCase(registerAuth.fulfilled, (state) => {
         state.isRegister = true;
         state.isLoading = false;
       })
-      .addCase(register.rejected, (state, action) => {
-        state.isLoading = false;
-        alert(action.payload);
-      })
+      .addCase(registerAuth.rejected, handleRejected)
       .addCase(logIn.pending, handlePending)
       .addCase(logIn.fulfilled, (state, action) => {
         state.user = action.payload.user;
@@ -41,10 +52,7 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.isLoading = false;
       })
-      .addCase(logIn.rejected, (state, action) => {
-        state.isLoading = false;
-        alert(action.payload);
-      })
+      .addCase(logIn.rejected, handleRejected)
       .addCase(logOut.pending, handlePending)
       .addCase(logOut.fulfilled, (state) => {
         state.user = { name: null, email: null, subscription: null, _id: null };
@@ -61,7 +69,7 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.isRefreshing = false;
       })
-      .addCase(refreshUser.rejected, (state) => {
+      .addCase(refreshUser.rejected, (state, action) => {
         state.isRefreshing = false;
       })
 
@@ -69,21 +77,18 @@ const authSlice = createSlice({
       .addCase(changeUserSubscription.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload;
-        state.isLoading = false;
       })
-      .addCase(changeUserSubscription.rejected, (state, action) => {
-        alert(action.payload);
-        state.isLoading = false;
-      });
+      .addCase(changeUserSubscription.rejected, handleRejected);
   },
 });
 
 export const authReducer = authSlice.reducer;
 
-export const getUserName = (state) => state.auth.user.name;
-export const getIsLoggedIn = (state) => state.auth.isLoggedIn;
-export const getIsRefreshing = (state) => state.auth.isRefreshing;
-export const getIsRegister = (state) => state.auth.isRegister;
-export const getUserSubscription = (state) => state.auth.user.subscription;
-export const getUser = (state) => state.auth.user;
-export const getIsLoading = (state) => state.auth.isLoading;
+export const getUserName = (state: RootState) => state.auth.user.name;
+export const getIsLoggedIn = (state: RootState) => state.auth.isLoggedIn;
+export const getIsRefreshing = (state: RootState) => state.auth.isRefreshing;
+export const getIsRegister = (state: RootState) => state.auth.isRegister;
+export const getUserSubscription = (state: RootState) =>
+  state.auth.user.subscription;
+export const getUser = (state: RootState) => state.auth.user;
+export const getIsLoading = (state: RootState) => state.auth.isLoading;

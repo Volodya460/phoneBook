@@ -6,28 +6,31 @@ import { getContacts } from "../../../redux/contactSlice";
 import { addContact } from "../../../redux/operations";
 import css from "./AddForm.module.css";
 import { addSchema } from "../../../formSchema/addSchema";
-import Input from "../Inputs/Inputs";
+import Input from "../Inputs/Input";
+import { AppDispatch } from "../../../redux/store";
+import { AddContact } from "../../../assets/schemas/ContactSchema";
 
 export default function AddForm() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const contacts = useSelector(getContacts);
   const user = useSelector(getUser);
 
-  const { register, handleSubmit, formState } = useForm({
+  const { register, handleSubmit, formState } = useForm<AddContact>({
     defaultValues: {
       name: "",
       email: "",
-      number: "",
+      phone: "",
     },
     resolver: zodResolver(addSchema),
   });
 
   const { errors } = formState;
 
-  const checkContactAdd = (email) => {
+  const checkContactAdd = (email: string) => {
     let normolizeEmail = email.toLowerCase();
     const ownerContacts = contacts.filter((contact) => {
-      let ownerId = contact.owner._id || contact.owner;
+      let ownerId =
+        typeof contact.owner === "object" ? contact.owner._id : contact.owner;
 
       return ownerId === user._id;
     });
@@ -36,12 +39,12 @@ export default function AddForm() {
     );
   };
 
-  const onSubmit = (e) => {
-    const { name, email, number } = e;
-    console.log(name);
+  const onSubmit = (e: AddContact) => {
+    const { name, email, phone } = e;
+
     let contact = {
       name,
-      phone: number,
+      phone,
       email,
     };
     if (checkContactAdd(contact.email)) {
@@ -61,15 +64,15 @@ export default function AddForm() {
         <Input {...register("name")} placeholder="Contact name" />
         <div className={css.errorSpan}>{errors.name?.message}</div>
       </label>
-      <label className={css.lableEmail} placeholder="User name">
+      <label className={css.lableEmail}>
         <span>Email</span>
         <Input {...register("email")} placeholder="Contact email" />
         <div className={css.errorSpan}>{errors.email?.message}</div>
       </label>
       <label className={css.lableNumber}>
-        <span>Number</span>
-        <Input {...register("number")} placeholder="Contact number" />
-        <div className={css.errorSpan}>{errors.number?.message}</div>
+        <span>Phone</span>
+        <Input {...register("phone")} placeholder="Contact number" />
+        <div className={css.errorSpan}>{errors.phone?.message}</div>
       </label>
       <button type="submit" className={css.formButton}>
         Add Contact

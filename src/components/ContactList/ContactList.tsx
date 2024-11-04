@@ -4,14 +4,15 @@ import { useSelector } from "react-redux";
 import css from "../ContactList/ContactList.module.css";
 import { useState } from "react";
 import { getUser, getUserSubscription } from "../../redux/auth/authSlice";
+import { ContactType } from "../../assets/schemas/ContactSchema";
 
 export function ContactList() {
-  const filter = useSelector(getInputFilter);
+  const filter: string | null = useSelector(getInputFilter) || "";
   const array = useSelector(getContacts);
   const user = useSelector(getUser);
   const userSubscription = useSelector(getUserSubscription);
 
-  const [SeeAllContacts, setSeeAllContacts] = useState(false);
+  const [seeAllContacts, setSeeAllContacts] = useState(false);
 
   const sortedItems = [...array].sort((a, b) => {
     const aOwnerId = typeof a.owner === "object" ? a.owner?._id : a.owner;
@@ -24,24 +25,21 @@ export function ContactList() {
     return 0;
   });
 
-  const contactsFilterPro = (array) => {
-    if (!SeeAllContacts) {
-      const ownerContacts = array.filter((contact) => {
-        let ownerId = contact.owner._id || contact.owner;
-
+  const contactsFilterPro = (contactsArray: ContactType[]) => {
+    if (!seeAllContacts) {
+      return contactsArray.filter((contact) => {
+        const ownerId =
+          typeof contact.owner === "object" ? contact.owner._id : contact.owner;
         return ownerId === user._id;
       });
-
-      return ownerContacts;
-    } else {
-      return array;
     }
+    return contactsArray;
   };
-  const buttonContacts = () => {
+  const renderButtonContacts = () => {
     if (userSubscription === "pro") {
       return (
         <>
-          {SeeAllContacts ? (
+          {seeAllContacts ? (
             <button
               className={css.buttonFiltr}
               type="button"
@@ -73,14 +71,14 @@ export function ContactList() {
 
   return (
     <>
-      {buttonContacts()}
+      {renderButtonContacts()}
 
       <ul className={css.contactList}>
         {filterList.map(({ _id, name, phone, email, owner }) => {
           return (
             <Contact
               key={_id}
-              id={_id}
+              _id={_id}
               name={name}
               phone={phone}
               email={email}

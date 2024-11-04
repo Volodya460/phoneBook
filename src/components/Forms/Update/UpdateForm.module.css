@@ -46,8 +46,11 @@
 
   .errorSpan {
     position: absolute;
-    top: -20px;
+    top: 0px;
     left: 85px;
+    @media screen and (min-width: 768px) {
+      top: -20px;
+    }
   }
 }
 
@@ -69,8 +72,11 @@
 
   .errorSpan {
     position: absolute;
-    top: -20px;
+    top: 0px;
     left: 85px;
+    @media screen and (min-width: 768px) {
+      top: -20px;
+    }
   }
 }
 .inputNumber {
@@ -91,8 +97,12 @@
 
   .errorSpan {
     position: absolute;
-    top: -20px;
+    top: 0px;
     left: 85px;
+
+    @media screen and (min-width: 768px) {
+      top: -20px;
+    }
   }
 }
 

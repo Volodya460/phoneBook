@@ -4,20 +4,35 @@ import { useDispatch } from "react-redux";
 import { updateContact } from "../../../redux/operations";
 import css from "./UpdateForm.module.css";
 import { updateSchema } from "../../../formSchema/updateSchema";
-import Input from "../Inputs/Inputs";
+import Input from "../Inputs/Input";
+import { FC } from "react";
+import { UpdateContact } from "../../../assets/schemas/ContactSchema";
+import { AppDispatch } from "../../../redux/store";
 
-export const UpdateForm = ({ id, name, phone, email }) => {
-  const dispatch = useDispatch();
+interface UpdateFormProps {
+  _id: string;
+  name: string;
+  phone: string;
+  email: string;
+}
 
-  const onSubmit = (e) => {
-    const { name, email, number } = e;
+export const UpdateForm: FC<UpdateFormProps> = ({
+  _id,
+  name,
+  phone,
+  email,
+}) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const onSubmit = (e: UpdateContact) => {
+    const { name, email, phone } = e;
 
     let contact = {
-      name: name,
-      phone: number,
-      email: email,
+      name,
+      phone,
+      email,
     };
-    dispatch(updateContact({ contact, id }));
+    dispatch(updateContact({ contact, _id }));
 
     document.body.style.overflow = "visible";
   };
@@ -26,7 +41,7 @@ export const UpdateForm = ({ id, name, phone, email }) => {
     defaultValues: {
       name: name,
       email: email,
-      number: phone,
+      phone: phone,
     },
     resolver: zodResolver(updateSchema),
   });
@@ -34,7 +49,7 @@ export const UpdateForm = ({ id, name, phone, email }) => {
   const { errors } = formState;
   const emailInput = watch("email");
   const nameInput = watch("name");
-  const phoneInput = watch("number");
+  const phoneInput = watch("phone");
   return (
     <>
       <form className={css.updateForm} onSubmit={handleSubmit(onSubmit)}>
@@ -53,8 +68,8 @@ export const UpdateForm = ({ id, name, phone, email }) => {
         <label className={css.inputNumber}>
           <span>Number</span>
 
-          <Input {...register("number")} />
-          <div className={css.errorSpan}>{errors.number?.message}</div>
+          <Input {...register("phone")} />
+          <div className={css.errorSpan}>{errors.phone?.message}</div>
         </label>
         <button className={css.button}>Update</button>
       </form>

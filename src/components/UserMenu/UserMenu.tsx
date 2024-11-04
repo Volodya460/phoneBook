@@ -4,40 +4,36 @@ import {
   getIsLoading,
   getUserName,
   getUserSubscription,
-} from "../../redux/auth/authSlice.js";
+} from "../../redux/auth/authSlice";
 import {
   changeUserSubscription,
   logOut,
-} from "../../redux/auth/authOperations.js";
+} from "../../redux/auth/authOperations";
 import css from "./UserMenu.module.css";
 import { UserLoader } from "../../assets/loaders/UserLoader.jsx";
+import { AppDispatch } from "../../redux/store";
 
 export default function UserMenu() {
   const userName = useSelector(getUserName);
   const userSubscription = useSelector(getUserSubscription);
   const userLoading = useSelector(getIsLoading);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const changeSub = (sub) => {
-    let subscription = {
-      subscription: sub,
-    };
+  const changeSub = (sub: "starter" | "pro") => {
+    dispatch(changeUserSubscription({ subscription: sub }));
+  };
 
-    dispatch(changeUserSubscription(subscription));
-  };
-  const buttonSub = () => {
-    if (userSubscription === "starter") {
-      return (
-        <button onClick={() => changeSub("pro")}>Get Pro Subscription</button>
-      );
-    } else {
-      return (
-        <button onClick={() => changeSub("starter")}>
-          Unsubscribe Pro Subscription
-        </button>
-      );
-    }
-  };
+  const buttonSub = () => (
+    <button
+      onClick={() =>
+        changeSub(userSubscription === "starter" ? "pro" : "starter")
+      }
+    >
+      {userSubscription === "starter"
+        ? "Get Pro Subscription"
+        : "Unsubscribe Pro Subscription"}
+    </button>
+  );
   return (
     <div className={css.userBox}>
       <ul className={css.userInfo}>

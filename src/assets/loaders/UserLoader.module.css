@@ -3,11 +3,10 @@
   position: relative;
   height: 20px;
   width: 100px;
-  background: #fff;
+  background: inherit;
   border: 2px solid #040404;
   color: rgb(138, 137, 137);
   overflow: hidden;
-  margin-top: 20px;
 }
 .loader::before {
   content: "";
@@ -46,7 +45,7 @@
     width: 100%;
   }
 }
-@keyframes percentage {
+/* @keyframes percentage {
   0% {
     content: "0%";
   }
@@ -98,4 +97,4 @@
   100% {
     content: "100%";
   }
-}
+} */

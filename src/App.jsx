@@ -4,20 +4,18 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import SharedLayout from "../src/components/SharedLayout/SharedLayout";
-
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, lazy } from "react";
+import SharedLayout from "../src/components/SharedLayout/SharedLayout";
 import { getIsRefreshing } from "./redux/auth/authSlice";
 import { refreshUser } from "./redux/auth/authOperations";
-
 import { PrivateRoute } from "./PrivateRout";
 import { RestrictedRoute } from "./RestrictedRout";
 import { AuthLoader } from "./assets/loaders/AuthLoader";
 
 const HomePage = lazy(() => import("../src/pages/HomePage"));
 const RegisterPage = lazy(() => import("../src/pages/RegistePage"));
-const LoginPage = lazy(() => import("../src/pages/LoginPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
 const ContactsPage = lazy(() => import("../src/pages/ContactsPage"));
 
 export default function App() {

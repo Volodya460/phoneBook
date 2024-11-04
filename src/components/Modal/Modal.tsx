@@ -1,13 +1,25 @@
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { createPortal } from "react-dom";
 import css from "./Modal.module.css";
 import { UpdateForm } from "../Forms/Update/UpdateForm";
 
 const modalRoot = document.querySelector("#modal-root");
-
-export const Modal = ({ closeModal, id, name, phone, email }) => {
+interface ModalProps {
+  closeModal: () => void;
+  _id: string;
+  name: string;
+  phone: string;
+  email: string;
+}
+export const Modal: FC<ModalProps> = ({
+  closeModal,
+  _id,
+  name,
+  phone,
+  email,
+}) => {
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         closeModal();
       }
@@ -20,17 +32,18 @@ export const Modal = ({ closeModal, id, name, phone, email }) => {
     };
   }, [closeModal]);
 
-  const handleBackDropClick = (e) => {
+  const handleBackDropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.currentTarget === e.target) {
       closeModal();
     }
   };
 
+  if (!modalRoot) return null;
   return createPortal(
     <div>
       <div className={css.overlay} onClick={handleBackDropClick}>
         <div className={css.modalWindow}>
-          <UpdateForm id={id} name={name} email={email} phone={phone} />
+          <UpdateForm _id={_id} name={name} email={email} phone={phone} />
         </div>
       </div>
     </div>,

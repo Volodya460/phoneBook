@@ -19,7 +19,7 @@ export const updateSchema = z.object({
       (value) => value.trim().length > 0,
       "Email cannot be only whitespace"
     ),
-  number: z
+  phone: z
     .string()
     .min(1, { message: "Number is required" })
     .min(10, "Too short")

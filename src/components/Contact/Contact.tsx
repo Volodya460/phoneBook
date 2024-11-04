@@ -2,21 +2,34 @@ import { useDispatch } from "react-redux";
 import { deleteContact } from "../../redux/operations";
 import { useSelector } from "react-redux";
 import { getUser } from "../../redux/auth/authSlice";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import { Modal } from "../Modal/Modal";
 import css from "./Contact.module.css";
+import { ContactType, Owner } from "../../assets/schemas/ContactSchema";
+import { AppDispatch } from "../../redux/store";
 
-export function Contact({ id, name, phone, email, owner }) {
+type ContactProps = Omit<ContactType, "createdAt" | "favorite" | "updatedAt">;
+
+export const Contact: FC<ContactProps> = ({
+  _id,
+  name,
+  phone,
+  email,
+  owner,
+}) => {
   const [buttonOn, setButtonOn] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const user = useSelector(getUser);
 
   useEffect(() => {
-    if (owner?._id === user._id || owner === user._id) {
+    if (
+      (typeof owner === "object" && owner._id === user._id) ||
+      owner === user._id
+    ) {
       setButtonOn(true);
     }
-  }, [owner?._id, user._id, owner]);
+  }, [owner, user._id]);
 
   const openModal = () => {
     setOpenModalUpdate(true);
@@ -27,21 +40,31 @@ export function Contact({ id, name, phone, email, owner }) {
     document.body.style.overflow = "visible";
   };
 
-  const getOwner = () => {
-    let ownerInf = {};
-    if (owner?._id === user._id || owner === user._id) {
-      ownerInf["name"] = user.name;
-      ownerInf["email"] = user.email;
+  const getOwnerName = (owner: string | Owner) => {
+    if (typeof owner === "object" && owner !== null) {
+      return owner.name || "unknown";
     }
+    if (owner === user._id) {
+      return user.name;
+    }
+    return "unknown";
+  };
 
-    return ownerInf;
+  const getOwnerEmail = (owner: string | Owner) => {
+    if (typeof owner === "object" && owner !== null) {
+      return owner.email || "unknown";
+    }
+    if (owner === user._id) {
+      return user.email;
+    }
+    return "unknown";
   };
 
   return (
     <>
       {" "}
       <li
-        key={id}
+        key={_id}
         className={`${css.contactCard} ${buttonOn ? css.ownerCard : ""}`}
       >
         <p>{name}</p>
@@ -49,8 +72,8 @@ export function Contact({ id, name, phone, email, owner }) {
         <p>{phone}</p>
         <h2>Owner</h2>
         <ul>
-          <li>{owner?.name || getOwner().name || "unknow"} </li>
-          <li>{owner?.email || getOwner().email || "unknow"}</li>
+          <li>{getOwnerName(owner)}</li>
+          <li>{getOwnerEmail(owner)}</li>
         </ul>
 
         {buttonOn ? (
@@ -59,7 +82,7 @@ export function Contact({ id, name, phone, email, owner }) {
             <button
               type="button"
               onClick={() => {
-                dispatch(deleteContact(id));
+                dispatch(deleteContact(_id));
               }}
             >
               Delete
@@ -78,7 +101,7 @@ export function Contact({ id, name, phone, email, owner }) {
       {openModalUpdate ? (
         <Modal
           closeModal={closeModal}
-          id={id}
+          _id={_id}
           name={name}
           email={email}
           phone={phone}
@@ -86,4 +109,4 @@ export function Contact({ id, name, phone, email, owner }) {
       ) : null}
     </>
   );
-}
+};
